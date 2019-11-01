@@ -1,0 +1,104 @@
+-- build the database
+SHOW databases;
+
+-- save environment settings and set settings to not check for errors
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- drop schema
+DROP SCHEMA IF EXISTS `msparke3assign2db` ;
+-- create schema
+CREATE SCHEMA IF NOT EXISTS `msparke3assign2db` DEFAULT CHARACTER SET utf8 ;
+
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON msparke3assign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+-- switch to database
+USE `msparke3assign2db` ;
+
+
+-- list tables
+SHOW tables;
+
+-- Create Table `msparke3assign2db`.`hospital`
+DROP TABLE IF EXISTS `msparke3assign2db`.`hospital` ;
+CREATE TABLE IF NOT EXISTS `msparke3assign2db`.`hospital` (
+  `hospitalCode` VARCHAR(3) NOT NULL,
+  `hospitalName` VARCHAR(20) NULL,
+  `city` VARCHAR(20) NULL,
+  `province` VARCHAR(2) NULL,
+  `numBeds` INT NULL,
+  `licenceNum` VARCHAR(4) NULL,
+  `startDate` DATE NULL,
+  PRIMARY KEY (`hospitalCode`),
+  INDEX `licenceNum_idx` (`licenceNum` ASC) VISIBLE,
+  CONSTRAINT `licenceNum`
+    FOREIGN KEY (`licenceNum`)
+    REFERENCES `msparke3assign2db`.`doctors` (`licenceNum`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- Create Table `msparke3assign2db`.`doctors`
+DROP TABLE IF EXISTS `msparke3assign2db`.`doctors` ;
+CREATE TABLE IF NOT EXISTS `msparke3assign2db`.`doctors` (
+  `licenceNum` VARCHAR(4) NOT NULL,
+  `firstName` VARCHAR(20) NULL,
+  `lastName` VARCHAR(20) NULL,
+  `specialty` VARCHAR(30) NULL,
+  `licenceDate` DATE NULL,
+  `hospitalCode` VARCHAR(3) NULL,
+  PRIMARY KEY (`licenceNum`),
+  INDEX `hospitalCode_idx` (`hospitalCode` ASC) VISIBLE,
+  CONSTRAINT `hospitalCode`
+    FOREIGN KEY (`hospitalCode`)
+    REFERENCES `msparke3assign2db`.`hospital` (`hospitalCode`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- Create Table `msparke3assign2db`.`patients`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `msparke3assign2db`.`patients` ;
+CREATE TABLE IF NOT EXISTS `msparke3assign2db`.`patients` (
+  `ohipId` INT(9) NOT NULL,
+  `firstName` VARCHAR(20) NULL,
+  `lastName` VARCHAR(20) NULL,
+  PRIMARY KEY (`ohipId`))
+ENGINE = InnoDB;
+
+
+-- create `msparke3assign2db`.`treats`
+DROP TABLE IF EXISTS `msparke3assign2db`.`treats` ;
+CREATE TABLE IF NOT EXISTS `msparke3assign2db`.`treats` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `doctorId` VARCHAR(4) NOT NULL,
+  `patientId` INT(9) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `doctorId_idx` (`doctorId` ASC) INVISIBLE,
+  INDEX `patientId_idx` (`patientId` ASC) INVISIBLE,
+  CONSTRAINT `doctorId`
+    FOREIGN KEY (`doctorId`)
+    REFERENCES `msparke3assign2db`.`doctors` (`licenceNum`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `patientId`
+    FOREIGN KEY (`patientId`)
+    REFERENCES `msparke3assign2db`.`patients` (`ohipId`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- list tables
+SHOW tables;
+
+
+-- reset environment settings to cached values
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

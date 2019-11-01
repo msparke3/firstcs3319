@@ -1,0 +1,55 @@
+ DELETE FROM msparke3assign2db.doctors WHERE licenceDate < '1965-01-01';
+--  Cannot delete or update a parent row: a foreign key constraint fails because CASCADE is disabled for ONUPDATE and doctors are referenced in other tables
+
+-- Create view
+use msparke3assign2db;
+CREATE VIEW view1 AS
+    SELECT 
+        p.firstName,
+        p.lastName,
+        d.lastName AS 'Doctor Last Name',
+        h.hospitalName
+    FROM
+        patients AS p,
+        doctors AS d,
+        treats AS a,
+        hospital AS h
+    WHERE
+        h.licenceNum = d.licenceNum
+            AND p.ohipId = a.patientId
+            AND a.doctorId LIKE (SELECT 
+                licenceNum
+            FROM
+                hospital
+            WHERE
+                licenceNum = d.licenceNum
+                    AND startDate > '1995-12-31');
+
+-- display view
+SELECT 
+    *
+FROM
+    view1;
+
+-- remove doctore with cascade on treats
+DELETE FROM doctors 
+WHERE
+    lastName LIKE 'Clooney';
+
+-- show updates to tables
+SELECT 
+    *
+FROM
+    doctors;
+SELECT 
+    *
+FROM
+    treats;
+
+
+-- try to delete sergions
+DELETE FROM doctors 
+WHERE
+    specialty LIKE 'Surgeon';
+select * from doctors where licenceNum = 'SE66';
+-- the delete command did not delete the rows because some surgeons are referenced by the hospital table and the index is set to restrict queries that remove the key referenced by hospitals

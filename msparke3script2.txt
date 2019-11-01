@@ -1,0 +1,73 @@
+
+
+select * from `msparke3assign2db`.`doctors`;
+-- Insert Data for table `msparke3assign2db`.`doctors`
+START TRANSACTION;
+USE `msparke3assign2db`;
+INSERT INTO `msparke3assign2db`.`doctors` (`licenceNum`, `firstName`, `lastName`, `specialty`, `licenceDate`, `hospitalCode`) VALUES ('RD34', 'Bernie', 'Kavorikian', 'Urologist', '1980-09-09', NULL);
+INSERT INTO `msparke3assign2db`.`doctors` (`licenceNum`, `firstName`, `lastName`, `specialty`, `licenceDate`, `hospitalCode`) VALUES ('GD56', 'Joey', 'Shabado', 'Podiatrist', '1960-06-24', NULL);
+INSERT INTO `msparke3assign2db`.`doctors` (`licenceNum`, `firstName`, `lastName`, `specialty`, `licenceDate`, `hospitalCode`) VALUES ('HT45', 'Ross', 'Clooney', 'Surgeon', '1987-06-20', NULL);
+INSERT INTO `msparke3assign2db`.`doctors` (`licenceNum`, `firstName`, `lastName`, `specialty`, `licenceDate`, `hospitalCode`) VALUES ('YT67', 'Ben ', 'Spock', 'Pediatrician', '1955-02-20', NULL);
+INSERT INTO `msparke3assign2db`.`doctors` (`licenceNum`, `firstName`, `lastName`, `specialty`, `licenceDate`, `hospitalCode`) VALUES ('JK78', 'Mandy', 'Webster', 'Surgeon', '1990-08-08', NULL);
+INSERT INTO `msparke3assign2db`.`doctors` (`licenceNum`, `firstName`, `lastName`, `specialty`, `licenceDate`, `hospitalCode`) VALUES ('SE66', 'Colleen', 'Aziz', 'Surgeon', '1989-08-24', NULL);
+INSERT INTO `msparke3assign2db`.`doctors` (`licenceNum`, `firstName`, `lastName`, `specialty`, `licenceDate`, `hospitalCode`) VALUES ('6969', 'Greys', 'Anatomy', 'BS', '1970-01-01', NULL);
+COMMIT;
+select * from `msparke3assign2db`.`doctors`;
+
+
+select * from `msparke3assign2db`.`hospital`;
+-- Insert Data for table `msparke3assign2db`.`hospital`
+START TRANSACTION;
+USE `msparke3assign2db`;
+INSERT INTO `msparke3assign2db`.`hospital` (`hospitalCode`, `hospitalName`, `city`, `province`, `numBeds`, `licenceNum`, `startDate`) VALUES ('BBC', 'St. Joseph', 'London', 'On', 1000, 'GD56', '1999-09-10');
+INSERT INTO `msparke3assign2db`.`hospital` (`hospitalCode`, `hospitalName`, `city`, `province`, `numBeds`, `licenceNum`, `startDate`) VALUES ('ABC', 'Victoria', 'London', 'On', 1600, 'SE66', '1994-12-05');
+INSERT INTO `msparke3assign2db`.`hospital` (`hospitalCode`, `hospitalName`, `city`, `province`, `numBeds`, `licenceNum`, `startDate`) VALUES ('DDE', 'Victoria', 'Victoria', 'BC', 1200, 'YT67', '1997-12-07');
+COMMIT;
+select * from `msparke3assign2db`.`hospital`;
+
+select * from `msparke3assign2db`.`doctors`;
+-- update Data for table `msparke3assign2db`.`doctors`
+START TRANSACTION;
+USE `msparke3assign2db`;
+UPDATE `msparke3assign2db`.`doctors` SET `hospitalCode` = 'BBC' WHERE licenceNum = 'RD34';
+UPDATE `msparke3assign2db`.`doctors` SET `hospitalCode` = 'BBC' WHERE licenceNum = 'GD56';
+UPDATE `msparke3assign2db`.`doctors` SET `hospitalCode` = 'DDE' WHERE licenceNum = 'HT45';
+UPDATE `msparke3assign2db`.`doctors` SET `hospitalCode` = 'DDE' WHERE licenceNum = 'YT67';
+UPDATE `msparke3assign2db`.`doctors` SET `hospitalCode` = 'BBC' WHERE licenceNum = 'JK78';
+UPDATE `msparke3assign2db`.`doctors` SET `hospitalCode` = 'ABC' WHERE licenceNum = 'SE66';
+UPDATE `msparke3assign2db`.`doctors` SET `hospitalCode` = 'ABC' WHERE licenceNum = '6969';
+COMMIT;
+select * from `msparke3assign2db`.`doctors`;
+
+
+select * from `msparke3assign2db`.`patients`;
+-- Insert Data for table `msparke3assign2db`.`patients`
+START TRANSACTION;
+USE `msparke3assign2db`;
+INSERT INTO `msparke3assign2db`.`patients` (`ohipId`, `firstName`, `lastName`) VALUES (110112113, 'Bill', 'Gellar');
+INSERT INTO `msparke3assign2db`.`patients` (`ohipId`, `firstName`, `lastName`) VALUES (444555666, 'Sean', 'Gellar');
+INSERT INTO `msparke3assign2db`.`patients` (`ohipId`, `firstName`, `lastName`) VALUES (111222333, 'Jon', 'Green');
+INSERT INTO `msparke3assign2db`.`patients` (`ohipId`, `firstName`, `lastName`) VALUES (333444555, 'Colleen', 'Gellar');
+INSERT INTO `msparke3assign2db`.`patients` (`ohipId`, `firstName`, `lastName`) VALUES (667766777, 'Scotty', 'Bing');
+INSERT INTO `msparke3assign2db`.`patients` (`ohipId`, `firstName`, `lastName`) VALUES (111222111, 'Suzi', 'Bing');
+COMMIT;
+select * from `msparke3assign2db`.`patients`;
+
+
+select * from `msparke3assign2db`.`treats`;
+-- Insert Data for table `msparke3assign2db`.`treats`
+START TRANSACTION;
+USE `msparke3assign2db`;
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('GD56', 110112113);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('HT45', 444555666);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('SE66', 111222333);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('GD56', 333444555);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('YT67', 667766777);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('YT67', 111222111);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('JK78', 444555666);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('YT67', 111222333);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('JK78', 111222333);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('JK78', 667766777);
+INSERT INTO `msparke3assign2db`.`treats` (`doctorId`, `patientId`) VALUES ('GD56', 667766777);
+COMMIT;
+select * from `msparke3assign2db`.`treats`;

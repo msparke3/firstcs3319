@@ -1,0 +1,133 @@
+-- Query 1
+SELECT 
+    lastName
+FROM
+    patients;
+
+-- Query 2
+SELECT DISTINCT
+    lastName
+FROM
+    patients;
+
+-- Query 3
+SELECT 
+    *
+FROM
+    doctors
+ORDER BY lastName ASC;
+
+-- Query 4
+SELECT 
+    hospitalName, hospitalCode
+FROM
+    hospital
+WHERE
+    hospital.numBeds > 1500;
+
+-- Query 5
+SELECT 
+    lastName, firstName
+FROM
+    doctors
+WHERE
+    doctors.hospitalCode IN (SELECT 
+            hospitalCode
+        FROM
+            hospital
+        WHERE
+            hospital.hospitalName = 'St. Joseph');
+
+-- Query 6
+SELECT 
+    firstName, lastName
+FROM
+    patients
+WHERE
+    patients.lastName LIKE 'G%';
+
+-- Query 7
+SELECT 
+    firstName, lastName
+FROM
+    patients
+WHERE
+    ohipId IN (SELECT 
+            treats.patientId
+        FROM
+            treats
+        WHERE
+            treats.doctorId LIKE (SELECT 
+                    licenceNum
+                FROM
+                    doctors
+                WHERE
+                    doctors.lastName LIKE 'Clooney'));
+
+-- Query 8
+SELECT 
+    hospital.hospitalName, hospital.city, doctors.lastName
+FROM
+    hospital
+        LEFT JOIN
+    doctors ON hospital.licenceNum = doctors.licenceNum;
+
+-- Query 9
+SELECT 
+    SUM(numBeds) AS 'Total Number of Beds'
+FROM
+    hospital;
+
+-- Query 10
+SELECT 
+    p.firstName, d.firstName
+FROM
+    patients AS p,
+    doctors AS d,
+    treats AS a
+WHERE
+    p.ohipId = a.patientId
+        AND a.doctorId LIKE (SELECT 
+            licenceNum
+        FROM
+            hospital
+        WHERE
+            licenceNum = d.licenceNum);
+
+-- Query 11
+SELECT 
+    firstName, lastName
+FROM
+    doctors
+WHERE
+    specialty LIKE 'Surgeon'
+        AND hospitalCode IN (SELECT 
+            hospitalCode
+        FROM
+            hospital
+        WHERE
+            hospitalName LIKE 'Victoria');
+
+-- Query 12
+SELECT 
+    firstName
+FROM
+    doctors
+WHERE
+    licenceNum NOT IN (SELECT 
+            doctorId
+        FROM
+            treats);
+
+-- Query 13
+SELECT 
+    lastName, firstName
+FROM
+    doctors
+WHERE
+    licenceNum IN (SELECT 
+            doctorId
+        FROM
+            treats
+        GROUP BY doctorId
+        HAVING COUNT(*) > 1); 
